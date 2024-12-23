@@ -1,54 +1,65 @@
 package com.example.fittrack;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fittrack.Activity.IntroActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Login extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-    private EditText loginEmail;
-    private TextView signupRedirectText;
-    private Button loginButton;
+    private EditText etEmail, etPassword;
+    private Button btnLogin;
+    private TextView tvSignUp;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // References to UI components
-        EditText etUsername = findViewById(R.id.etUsername);
-        EditText etPassword = findViewById(R.id.etPassword);
-        Button btnLogin = findViewById(R.id.btnLogin);
-        TextView tvError = findViewById(R.id.tvError);
+        // Initialize views
+        etEmail = findViewById(R.id.etEmail);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+        tvSignUp = findViewById(R.id.tvSignUp);
 
-        // Predefined username and password
-        String validUsername = "admin";
-        String validPassword = "password123";
+        mAuth = FirebaseAuth.getInstance();
 
-        // Set button click listener
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String username = etUsername.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
+        // Set click listener for the login button
+        btnLogin.setOnClickListener(view -> {
+            String email = etEmail.getText().toString().trim();
+            String password = etPassword.getText().toString().trim();
 
-                // Validate credentials
-                if (username.isEmpty() || password.isEmpty()) {
-                    tvError.setText("Please fill all fields");
-                } else if (username.equals(validUsername) && password.equals(validPassword)) {
-                    tvError.setText("Login successful!");
-                    tvError.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-                } else {
-                    tvError.setText("Invalid username or password");
-                    tvError.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
-                }
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(Login.this, "Please enter both email and password", Toast.LENGTH_SHORT).show();
+            } else {
+                // Replace this block with your authentication logic
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Login.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(Login.this, IntroActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(Login.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
+        });
+
+        // Set click listener for the sign-up text
+        tvSignUp.setOnClickListener(view -> {
+            Intent intent = new Intent(Login.this, SignupActivity.class);
+            startActivity(intent);
         });
     }
 }

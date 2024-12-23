@@ -1,65 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainColor"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:background="@color/mainColor">
 
-    <!-- Name Field -->
-    <EditText
-        android:id="@+id/editTextName"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Full Name"
-        android:textColorHint="@color/white"
-        android:inputType="textPersonName"
-        android:marginBottom="16dp"
-        android:padding="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Create Account"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <!-- Email Field -->
     <EditText
-        android:id="@+id/editTextEmail"
+        android:id="@+id/etSignUpEmail"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Email Address"
-        android:textColorHint="@color/white"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Email"
         android:inputType="textEmailAddress"
-        android:marginBottom="16dp"
-        android:padding="10dp" />
+        android:padding="12dp"
+        android:textColorHint="@color/white" />
 
-    <!-- Password Field -->
     <EditText
-        android:id="@+id/editTextPassword"
+        android:id="@+id/etSignUpPassword"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:hint="Password"
-        android:textColorHint="@color/white"
         android:inputType="textPassword"
-        android:marginBottom="16dp"
-        android:padding="10dp" />
+        android:padding="12dp"
+        android:textColorHint="@color/white" />
 
-    <!-- Confirm Password Field -->
-    <EditText
-        android:id="@+id/editTextConfirmPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Confirm Password"
-        android:textColorHint="@color/white"
-        android:inputType="textPassword"
-        android:marginBottom="16dp"
-        android:padding="10dp" />
-
-    <!-- Signup Button -->
     <Button
-        android:id="@+id/buttonSignup"
+        android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/orange"
-        android:marginTop="20dp"
-        android:padding="12dp"
         android:text="Sign Up"
-        android:textColor="@android:color/white" />
-
+        android:textColor="@color/white" />
 </LinearLayout>
