@@ -1,23 +1,30 @@
-package com.example.fittrack.Activity;
+package com.example.fittrack.Activity
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.WindowManager;
+import android.content.Intent
+import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import com.example.fittrack.databinding.ActivityIntroBinding
 
-import androidx.appcompat.app.AppCompatActivity;
+class IntroActivity : AppCompatActivity() {
+    var binding: ActivityIntroBinding? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityIntroBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
 
-import com.example.fittrack.databinding.ActivityIntroBinding;
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
 
-public class IntroActivity extends AppCompatActivity {
-ActivityIntroBinding binding;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding=ActivityIntroBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-        binding.startBtn.setOnClickListener(view -> startActivity(new Intent(IntroActivity.this,MainActivity.class)));
+        binding!!.startBtn.setOnClickListener { view: View? ->
+            startActivity(
+                Intent(
+                    this@IntroActivity, MainActivity::class.java
+                )
+            )
+        }
     }
 }

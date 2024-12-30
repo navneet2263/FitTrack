@@ -1,59 +1,52 @@
-package com.example.fittrack.Activity;
+package com.example.fittrack.Activity
 
-import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
+import android.os.Bundle
+import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.fittrack.Adapter.LessionsAdapter
+import com.example.fittrack.Domain.Workout
+import com.example.fittrack.databinding.ActivityWorkoutBinding
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+class WorkoutActivity : AppCompatActivity() {
+    var binding: ActivityWorkoutBinding? = null
+    private var workout: Workout? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityWorkoutBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
 
-import com.bumptech.glide.Glide;
-import com.example.fittrack.Adapter.LessionsAdapter;
-import com.example.fittrack.Domain.Workout;
-import com.example.fittrack.databinding.ActivityWorkoutBinding;
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
 
-import java.io.Serializable;
-
-public class WorkoutActivity extends AppCompatActivity {
-ActivityWorkoutBinding binding;
-private Workout workout;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityWorkoutBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-        getObject();
-        setVariable();
-
+        `object`
+        setVariable()
     }
 
-    private void getObject() {
-        workout=(Workout) getIntent().getSerializableExtra("object");
-    }
+    private val `object`: Unit
+        get() {
+            workout = intent.getSerializableExtra("object") as Workout?
+        }
 
-    private void setVariable() {
-        int resId=getResources().getIdentifier(workout.getPicPath(),"drawable",getPackageName());
+    private fun setVariable() {
+        val resId = resources.getIdentifier(workout!!.picPath, "drawable", packageName)
         Glide.with(this)
-                .load(resId)
-                .into(binding.pic);
+            .load(resId)
+            .into(binding!!.pic)
 
-        binding.backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        binding!!.backBtn.setOnClickListener { finish() }
 
-        binding.titleTxt.setText(workout.getTitle());
-        binding.excersizeTxt.setText(workout.getLessions().size()+" Exercise");
-        binding.kcalTxt.setText(workout.getKcal()+" Kcal");
-        binding.durationTxt.setText(workout.getDurationAll());
-        binding.description.setText(workout.getDescription());
+        binding!!.titleTxt.text = workout!!.title
+        binding!!.excersizeTxt.text = workout!!.lessions.size.toString() + " Exercise"
+        binding!!.kcalTxt.text = workout!!.kcal.toString() + " Kcal"
+        binding!!.durationTxt.text = workout!!.durationAll
+        binding!!.description.text = workout!!.description
 
-        binding.View3.setLayoutManager(new LinearLayoutManager(WorkoutActivity.this,LinearLayoutManager.VERTICAL,false));
-        binding.View3.setAdapter(new LessionsAdapter(workout.getLessions()));
+        binding!!.View3.layoutManager =
+            LinearLayoutManager(this@WorkoutActivity, LinearLayoutManager.VERTICAL, false)
+        binding!!.View3.adapter = LessionsAdapter(workout!!.lessions)
     }
 }

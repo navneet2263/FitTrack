@@ -1,75 +1,61 @@
-package com.example.fittrack.Adapter;
+package com.example.fittrack.Adapter
 
-import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.fittrack.Domain.Lession
+import com.example.fittrack.databinding.ViewholderExerciseBinding
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+class LessionsAdapter(private val list: ArrayList<Lession>) :
+    RecyclerView.Adapter<LessionsAdapter.Viewholder>() {
+    private var context: Context? = null
 
-import com.bumptech.glide.Glide;
-import com.example.fittrack.Domain.Lession;
-import com.example.fittrack.databinding.ViewholderExerciseBinding;
-import com.example.fittrack.databinding.ViewholderWorktoutBinding;
-
-import java.util.ArrayList;
-
-public class LessionsAdapter extends RecyclerView.Adapter<LessionsAdapter.Viewholder> {
-
-    private final ArrayList<Lession>list;
-    private Context context;
-
-    public LessionsAdapter(ArrayList<Lession> list) {
-        this.list = list;
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
+        context = parent.context
+        val binding =
+            ViewholderExerciseBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return Viewholder(binding)
     }
 
-    @NonNull
-    @Override
-    public LessionsAdapter.Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context=parent.getContext();
-        ViewholderExerciseBinding binding=ViewholderExerciseBinding.inflate(LayoutInflater.from(parent.getContext()),parent,false);
-        return new Viewholder(binding);
-    }
+    override fun onBindViewHolder(holder: Viewholder, @SuppressLint("RecyclerView") position: Int) {
+        holder.binding.titleTxt.text = list[position].title
+        holder.binding.durationTxt.text = list[position].duration
 
-    @Override
-    public void onBindViewHolder(@NonNull LessionsAdapter.Viewholder holder, @SuppressLint("RecyclerView") int position) {
-    holder.binding.titleTxt.setText(list.get(position).getTitle());
-    holder.binding.durationTxt.setText(list.get(position).getDuration());
-
-    int resId=context.getResources().getIdentifier(list.get(position).getPicPath(),"drawable",context.getPackageName());
-    Glide.with(context)
+        val resId = context!!.resources.getIdentifier(
+            list[position].picPath,
+            "drawable",
+            context!!.packageName
+        )
+        Glide.with(context!!)
             .load(resId)
-            .into(holder.binding.pic);
+            .into(holder.binding.pic)
 
-    holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Intent appIntent=new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:"+list.get(position).getLink()));
-            Intent webIntent=new Intent(Intent.ACTION_VIEW,Uri.parse("http://www.youtube.com/watch?v="+list.get(position).getLink()));
-            try{
-                context.startActivity(appIntent);
-            }catch (ActivityNotFoundException ex){
-                context.startActivity(webIntent);
+        holder.binding.root.setOnClickListener {
+            val appIntent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + list[position].link))
+            val webIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + list[position].link)
+            )
+            try {
+                context!!.startActivity(appIntent)
+            } catch (ex: ActivityNotFoundException) {
+                context!!.startActivity(webIntent)
             }
         }
-    });
     }
 
-    @Override
-    public int getItemCount() {
-        return list.size();
+    override fun getItemCount(): Int {
+        return list.size
     }
 
-    public class Viewholder extends RecyclerView.ViewHolder {
-        ViewholderExerciseBinding binding;
-        public Viewholder(ViewholderExerciseBinding binding) {
-            super(binding.getRoot());
-            this.binding=binding;
-        }
-    }
+    inner class Viewholder(var binding: ViewholderExerciseBinding) : RecyclerView.ViewHolder(
+        binding.root
+    )
 }
