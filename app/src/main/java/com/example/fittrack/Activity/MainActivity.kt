@@ -5,12 +5,18 @@ import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fittrack.Adapter.WorkoutAdapter
+import com.example.fittrack.AddFragment
 import com.example.fittrack.Domain.Lession
 import com.example.fittrack.Domain.Workout
+import com.example.fittrack.HomeFragment
+import com.example.fittrack.ProfileFragment
 import com.example.fittrack.R
+import com.example.fittrack.WorkoutsFragment
 import com.example.fittrack.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
     var binding: ActivityMainBinding? = null
@@ -19,7 +25,26 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding!!.root)
 
+        // Set the default fragment
+        loadFragment(HomeFragment())
 
+        // Bottom Navigation View setup
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> loadFragment(HomeFragment())
+                R.id.nav_workouts -> loadFragment(WorkoutsFragment())
+                R.id.nav_add -> loadFragment(AddFragment())
+                R.id.nav_profile -> loadFragment(ProfileFragment())
+            }
+            true
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.nav_host_fragment, fragment)
+            .commit()
 
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,

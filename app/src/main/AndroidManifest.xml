@@ -15,6 +15,9 @@
         android:theme="@style/Theme.FitTrack"
         tools:targetApi="31">
         <activity
+            android:name=".WorkoutDetails"
+            android:exported="false" />
+        <activity
             android:name=".Activity.FillDetailsActivity"
             android:exported="false" />
         <activity
